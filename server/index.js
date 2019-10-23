@@ -57,10 +57,13 @@ app.get('/currentconnection', async (req,res) => {
 })
 
 app.post('/connect', async (req,res) => {
+
     if(!req.body){
         res.send({message: "No body sent"})
         return
     }
+    
+    console.log(req.body)
     wifi.init({
         iface: null
       });

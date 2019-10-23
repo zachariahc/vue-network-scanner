@@ -1,13 +1,13 @@
 <template>
   <div class="home">
-    <DefaultHeader 
-    v-if="currentConnData.length === 0" 
-    defaultMessage="No connection detected. Please enable wifi and refresh"
+    <DefaultHeader
+      v-if="currentConnData.length === 0"
+      defaultMessage="No connection detected. Please enable wifi and refresh"
     />
     <HeaderBar
       v-for="current in currentConnData"
       :key="current.id"
-      title="Network Scanner"
+      title="Wi-Finder"
       :currentSsid="current.ssid"
       :currentBssid="current.bssid"
       :currentSecurity="current.security"
@@ -29,7 +29,7 @@ export default {
   components: {
     NetworkInformation,
     HeaderBar,
-    DefaultHeader,
+    DefaultHeader
   },
   data() {
     return {
@@ -51,7 +51,7 @@ export default {
     this.currentNetwork();
   },
   updated() {
-    this.currentNetwork();
+    // this.currentNetwork();
   }
 };
 </script>
