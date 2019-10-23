@@ -7,7 +7,7 @@
       <p>Signal Level: {{ currentSignalLevel || 'No current connection'}}</p>
       <p>Security: {{ currentSecurity }}</p>
     </div>
-    <h1 class="header-bar-heading">{{ title }}</h1>
+    <h2 class="header-bar-heading">{{ title }}</h2>
   </div>
 </template>
 

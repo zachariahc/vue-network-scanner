@@ -10,10 +10,7 @@
             <span v-if="selectedNetwork.security[0]">
               <p>Please enter a password and click connect</p>
               <div class="input-container">
-                <i
-                  :class="{'far fa-eye-slash icon': !showPass, 'far fa-eye icon' : showPass}"
-                  @click="showPassword"
-                ></i>
+                <font-awesome-icon class="icon" @click="showPassword" :icon="icon"></font-awesome-icon>
                 <input
                   class="input-field"
                   placeholder="password"
@@ -23,7 +20,11 @@
                 />
               </div>
             </span>
-            <button @click="connectToNetwork" :class="{'btn-disabled': !password, 'btn' : password}" :disabled="password === ''">
+            <button
+              @click="connectToNetwork"
+              :class="{'btn-disabled': !password, 'btn' : password}"
+              :disabled="password === ''"
+            >
               <SmallLoader class="small-loader-position" v-if="showSmallLoader" />
               <span v-else class>Connect</span>
             </button>
@@ -58,24 +59,27 @@ export default {
       connectionRes: {},
       showPass: false,
       inputType: "password",
-      showSmallLoader: false
+      showSmallLoader: false,
+      icon: "eye-slash"
     };
   },
   methods: {
     showPassword() {
       if (this.showPass === false) {
         this.showPass = true;
+        this.icon = "eye";
         this.inputType = "text";
       } else {
         this.showPass = false;
+        this.icon = "eye-slash";
         this.inputType = "password";
       }
     },
     closeModal(value) {
       this.$emit("closedFromModal");
       this.password = "";
-      this.showPass = false;
-      console.log(this.showPass);
+      this.inputType = "password";
+      this.icon = "eye-slash";
     },
     capturePassword(e) {
       this.password = e.target.value;
@@ -137,9 +141,8 @@ export default {
 </script>
 
 <style scoped>
-
 .test-class:after {
-  content: '\002B'
+  content: "\002B";
 }
 
 .btn {
