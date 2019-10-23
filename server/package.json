@@ -1,0 +1,22 @@
+{
+  "name": "node-internet-check",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "internet-available": "^1.0.0",
+    "network-scanner": "0.0.2",
+    "node-wifi": "^2.0.12",
+    "nodemon": "^1.19.4",
+    "systeminformation": "^4.14.16"
+  }
+}
