@@ -1,5 +1,9 @@
 <template>
   <div class="home">
+    <DefaultHeader 
+    v-if="currentConnData.length === 0" 
+    defaultMessage="No connection detected. Please enable wifi and refresh"
+    />
     <HeaderBar
       v-for="current in currentConnData"
       :key="current.id"
@@ -18,12 +22,14 @@
 // import dog from '../../utils'
 import NetworkInformation from "@/components/NetworkInformation.vue";
 import HeaderBar from "@/components/HeaderBar.vue";
+import DefaultHeader from "@/components/DefaultHeader.vue";
 
 export default {
   name: "home",
   components: {
     NetworkInformation,
-    HeaderBar
+    HeaderBar,
+    DefaultHeader,
   },
   data() {
     return {
@@ -43,6 +49,10 @@ export default {
   },
   mounted() {
     this.currentNetwork();
+  },
+  updated() {
+    this.currentNetwork();
   }
 };
 </script>
+

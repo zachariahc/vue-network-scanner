@@ -1,7 +1,8 @@
 <template>
   <div>
-    <Loader v-if="!loaded" class="loader-position" />
-    <table v-if="loaded" >
+    <button class="refresh-button" v-if="showButton" @click="closestNetworks">Try Again</button>
+    <Loader v-if="!loaded || networks.length === 0" class="loader-position" />
+    <table v-if="loaded && networks.length > 0" >
       <thead v-if="networks.length !== 0">
         <tr>
           <th>SSID</th>
@@ -50,19 +51,33 @@ export default {
       networks: [],
       loaded: false,
       selectedNetwork: {},
-      openModal: false
+      openModal: false,
+      showButton: false
     };
+  },
+  computed: {
+    showButton: function(){
+
+      // const check = setTimeout(() => {
+      //   return 'Hello'
+      // }, 3000)
+      // console.log(check)
+      const networkCheck = this.networks.length > 0 ? true : false
+      return networkCheck
+    }
   },
   methods: {
         closeModal(value) {
           this.openModal = false
     },
     async closestNetworks() {
+    
       try {
         const response = await fetch("http://localhost:3000/networkscanone");
         const data = await response.json();
         this.networks = data;
         this.loaded = true;
+        this.networks.length > 0 ? this.showButton = false : this.showButton= true
       } catch (err) {
         console.error(err);
       }
@@ -96,5 +111,17 @@ tr > th {
 .network-row:hover {
   background-color: rgba(47, 75, 109, 0.5);
   cursor: pointer;
+}
+.refresh-button {
+  cursor: pointer;
+  padding: 7px;
+  margin: 10px;
+  margin-top: 10px;
+  background-color: rgb(206, 82, 0);
+  color: white;
+  font-size: 1.1rem;
+}
+.refresh-button:hover {
+  opacity: .75;
 }
 </style>

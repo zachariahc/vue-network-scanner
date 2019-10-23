@@ -7,8 +7,12 @@
             <h3>You are attempting to connect to:</h3>
             <h4>{{selectedNetwork.ssid}}</h4>
             <p>Please enter a password and click connect</p>
-            <div>
-              <input v-model="password" @keyup="capturePassword" />
+            <div class="password-input">
+              <input v-model="password" :type="inputType" @keyup="capturePassword" />
+              <i 
+              :class="{'far fa-eye-slash': !showPass, 'far fa-eye' : showPass}"
+              @click="showPassword"
+              ></i>
             </div>
             <button @click="closeModal" class="cancel-button">{{ isOpen ? "Close" : "Open" }}</button>
             <button @click="connectToNetwork" class="connect-button">Connect</button>
@@ -37,9 +41,20 @@ export default {
       password: "",
       errorMessage: "",
       connectionsRes: "",
+      showPass: false,
+      inputType: 'password'
     };
   },
   methods: {
+    showPassword(){
+      if(this.showPass === false){
+        this.showPass = true
+        this.inputType = 'text'
+      } else {
+        this.showPass = false
+        this.inputType = 'password'
+      }
+    },
     closeModal(value) {
       this.$emit("closedFromModal");
     },
@@ -51,6 +66,9 @@ export default {
         return
       } else {
         this.errorMessage = "Must include a password";
+        setTimeout(() => {
+          this.errorMessage = ''
+        }, 3000)
       }
 
       fetch("http://localhost:3000/connect", {
@@ -137,5 +155,18 @@ export default {
 }
 .error-message {
   color: red;
+}
+.password-input {
+  /* display: flex;
+  justify-content: center; */
+  /* background-color: red; */
+  /* width: 250px; */
+}
+.password-input > i {
+  margin-left: 10px;
+  cursor: pointer;
+}
+.password-input > i:hover {
+  opacity: .75;
 }
 </style>
