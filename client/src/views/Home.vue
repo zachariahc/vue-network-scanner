@@ -51,7 +51,7 @@ export default {
     this.currentNetwork();
   },
   updated() {
-    // this.currentNetwork();
+    this.currentNetwork();
   }
 };
 </script>

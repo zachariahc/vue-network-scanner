@@ -9,16 +9,24 @@
             <h4>{{selectedNetwork.ssid}}</h4>
             <span v-if="selectedNetwork.security[0]">
               <p>Please enter a password and click connect</p>
-              <div class="password-input">
-                <input v-model="password" :type="inputType" @keyup="capturePassword" />
+              <div class="input-container">
                 <i
-                  :class="{'far fa-eye-slash': !showPass, 'far fa-eye' : showPass}"
+                  :class="{'far fa-eye-slash icon': !showPass, 'far fa-eye icon' : showPass}"
                   @click="showPassword"
                 ></i>
+                <input
+                  class="input-field"
+                  placeholder="password"
+                  v-model="password"
+                  :type="inputType"
+                  @keyup="capturePassword"
+                />
               </div>
-              <SmallLoader class="small-loader-position" v-if="showSmallLoader" />
             </span>
-            <button @click="connectToNetwork" class="connect-button">Connect</button>
+            <button @click="connectToNetwork" :class="{'btn-disabled': !password, 'btn' : password}" :disabled="password === ''">
+              <SmallLoader class="small-loader-position" v-if="showSmallLoader" />
+              <span v-else class>Connect</span>
+            </button>
             <p class="error-message">{{ errorMessage }}</p>
             {{connectionRes.message}}
           </div>
@@ -64,9 +72,10 @@ export default {
       }
     },
     closeModal(value) {
-      console.log(value);
       this.$emit("closedFromModal");
       this.password = "";
+      this.showPass = false;
+      console.log(this.showPass);
     },
     capturePassword(e) {
       this.password = e.target.value;
@@ -74,13 +83,14 @@ export default {
     async connectToNetwork() {
       if (this.password === "") {
         this.errorMessage = "Must include a password";
+        this.showPass = false;
         setTimeout(() => {
           this.errorMessage = "";
         }, 3000);
         return;
       }
-      if(this.showPass === true){
-            this.showPassword()
+      if (this.showPass === true) {
+        this.showPassword();
       }
       this.showSmallLoader = true;
 
@@ -102,6 +112,11 @@ export default {
             this.showSmallLoader = false;
             this.connectionRes = "";
             this.closeModal({ successMessage: resJson.message });
+          } else {
+            this.showSmallLoader = false;
+            setTimeout(() => {
+              this.connectionRes = "";
+            }, 3000);
           }
         })
         .catch(error => console.log(error));
@@ -122,46 +137,80 @@ export default {
 </script>
 
 <style scoped>
+
+.test-class:after {
+  content: '\002B'
+}
+
+.btn {
+  height: 50px;
+  font-size: 15px;
+  background-color: dodgerblue;
+  color: white;
+  padding: 7.5px;
+  border: none;
+  cursor: pointer;
+  width: 50%;
+  opacity: 0.9;
+}
+.btn-disabled {
+  height: 50px;
+  font-size: 15px;
+  background-color: rgb(199, 197, 197);
+  color: white;
+  padding: 7.5px;
+  width: 50%;
+  opacity: 0.9;
+}
+.btn:hover {
+  opacity: 0.8;
+}
+.input-container {
+  display: -ms-flexbox; /* IE10 */
+  display: flex;
+  width: 50%;
+  margin: 0 auto;
+  margin-bottom: 15px;
+}
+
+.icon {
+  cursor: pointer;
+  padding: 10px;
+  background: dodgerblue;
+  color: white;
+  min-width: 50px;
+  text-align: center;
+}
+.input-field {
+  width: 100%;
+  padding: 10px;
+  outline: none;
+}
+
 .modal {
   width: 500px;
+  height: 300px;
   margin: 0px auto;
   padding: 20px;
   background-color: #fff;
   border-radius: 2px;
   box-shadow: 0 2px 8px 3px;
   transition: all 0.2s ease-in;
-  font-family: Helvetica, Arial, sans-serif;
 }
 .fadeIn-enter {
   opacity: 0;
 }
-
 .fadeIn-leave-active {
   opacity: 0;
   transition: all 0.2s step-end;
 }
-
 .fadeIn-enter .modal,
 .fadeIn-leave-active.modal {
   transform: scale(1.1);
 }
-.cancel-button {
-  padding: 7px;
-  margin: 10px;
-  margin-top: 10px;
-  background-color: rgb(206, 82, 0);
-  color: white;
-  font-size: 1.1rem;
+.button-group {
+  display: flex;
 }
-.connect-button {
-  padding: 7px;
-  margin: 10px;
-  margin-top: 10px;
-  background-color: green;
-  color: white;
-  font-size: 1.1rem;
-}
-
 .overlay {
   position: fixed;
   top: 0;
@@ -178,19 +227,8 @@ export default {
 .error-message {
   color: red;
 }
-.password-input {
-  margin-left: 25px;
-}
-.password-input > i {
-  margin-left: 10px;
-  cursor: pointer;
-}
-.password-input > i:hover {
-  opacity: 0.75;
-}
 .small-loader-position {
   margin: 0 auto;
-  margin-top: 10px;
 }
 .close-modal-x {
   float: right;

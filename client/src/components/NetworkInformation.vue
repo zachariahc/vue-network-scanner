@@ -33,8 +33,11 @@
         </tr>
       </tbody>
     </table>
-
-    <Modal :isOpen="openModal" :selectedNetwork="selectedNetwork" @closedFromModal="closeModal" />
+    <Modal 
+    :isOpen="openModal" 
+    :selectedNetwork="selectedNetwork" 
+    @closedFromModal="closeModal" 
+    />
   </div>
 </template>
 
@@ -61,7 +64,6 @@ export default {
   },
   methods: {
     closeModal(value) {
-      console.log("Value in network information")
       this.openModal = false;
     },
     async closestNetworks() {
