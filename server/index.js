@@ -1,20 +1,24 @@
-
 const si = require("systeminformation");
 const wifi = require("node-wifi");
-
-var cors = require("cors");
-
+const cors = require("cors");
 const express = require("express");
 const app = express();
 const port = 3000;
-
 const bodyParser = require("body-parser");
 
 app.use(bodyParser());
 app.use(cors());
 
+/*
+Available endpoints: 
+http://localhost:3000/
+http://localhost:3000/networkscanone
+http://localhost:3000/networkscantwo
+http://localhost:3000/currentconnection
+http://localhost:3000/connect
+*/
 app.get("/", (req, res) => {
-  res.send({ responseMessage: "Hello From Network Scanner Server" });
+  res.send({ message: "Hello From Network Scanner Server" });
 });
 
 app.get("/networkscanone", async (req, res) => {
@@ -55,12 +59,14 @@ app.get("/currentconnection", async (req, res) => {
 });
 
 app.post("/connect", async (req, res) => {
-  if (!req.body) {
-    res.send({ message: "No body sent" });
+  if (!req.body.ssid && !req.body.password) {
+    res.send({ message: "No SSID or Password" });
     return;
+  } else if (!req.body.ssid) {
+    res.send({ message: "No SSID" });
+  } else if (!req.body.password) {
+    res.send({ message: "No Password" });
   }
-
-  console.log("Body of fetch request from front end", req.body);
   wifi.init({
     iface: null
   });
