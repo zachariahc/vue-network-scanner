@@ -15,7 +15,7 @@ app.use(cors());
 
 
 app.get('/', (req, res) => {
-    res.send({responseMessage: 'Hello'})
+    res.send({responseMessage: 'Hello From Network Scanner Server'})
 })
 
 app.get('/networkscanone', async(req, res) => {
