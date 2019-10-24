@@ -8,13 +8,16 @@ const bodyParser = require("body-parser");
 
 app.use(bodyParser());
 app.use(cors());
-
 /*
 Available endpoints: 
+
+GET:
 http://localhost:3000/
 http://localhost:3000/networkscanone
 http://localhost:3000/networkscantwo
 http://localhost:3000/currentconnection
+
+POST:
 http://localhost:3000/connect
 */
 app.get("/", (req, res) => {
