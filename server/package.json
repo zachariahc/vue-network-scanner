@@ -12,7 +12,7 @@
   "license": "ISC",
   "dependencies": {
     "cors": "^2.8.5",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "internet-available": "^1.0.0",
     "network-scanner": "0.0.2",
     "node-wifi": "^2.0.12",
